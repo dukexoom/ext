@@ -26,7 +26,7 @@ defmodule Ext.Logger.Rollbar.ErrorSend do
   def handle_event({:error, gl, {_logger, message, _date, stacktrace}}, state) when node(gl) == node() do
     Logger.info("ErrorSend handler, gl=#{inspect(node(gl))}, node=#{inspect(node())}, message=#{inspect(message)}")
 
-    unless message =~ "(Rollbax)" do
+    unless is_binary(message) && message =~ "(Rollbax)" do
       Rollbax.report_message(:error, "#{message}\n\n#{inspect(stacktrace)}")
     end
 
